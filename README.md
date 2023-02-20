@@ -23,3 +23,4 @@ Instructions for adding the YouCan Pay SDK to your Python Applications.
 - This package installed in your Development / Production environment.
 
 #### Step 2: Integrate YouCan Pay SDK with your project
+Coming Soon...
