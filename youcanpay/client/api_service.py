@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+from youcanpay import exceptions
 
 
 class APIService(object):
@@ -31,6 +32,28 @@ class APIService(object):
 
     def get_public_key(self) -> str:
         return self.public_key
+
+    def assert_response(self, response):
+        msg = None
+        try:
+            res = response.json()
+            msg = res.get('message', None)
+        except:
+            pass
+        if response.status_code == 200 or response.status_code == 201:
+            return response.json()
+        elif response.status_code == 400:
+            raise exceptions.BadRequestError(msg)
+        elif response.status_code == 401:
+            raise exceptions.UnauthorizedError(msg)
+        elif response.status_code == 404:
+            raise exceptions.NotFoundError(msg)
+        elif response.status_code == 422:
+            raise exceptions.UnprocessableEntityError(msg)
+        elif response.status_code == 500:
+            raise exceptions.InternalServerError(msg)
+        else:
+            raise exceptions.UnknownError(msg)
 
     @staticmethod
     def request(method: str, endpoint: str, data: dict, headers: dict):
