@@ -13,7 +13,7 @@ class Keys:
 
     def check(self):
         """
-        Check if the API keys are valid
+        Check if the API keys are valid or not
 
         Arguments:
                  None
