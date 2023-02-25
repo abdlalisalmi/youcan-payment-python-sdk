@@ -7,3 +7,5 @@
 /dist/
 main.py
 __pycache__
+.env
+.vscode
