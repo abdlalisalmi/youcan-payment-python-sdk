@@ -19,6 +19,8 @@ YouCan Pay Python SDK is a Python package that allows the developers to interact
 - [Why](#Why)
   - [Why not use the YouCan Pay API directly?](#Why-not-use-the-YouCan-Pay-API-directly?)
 - [Setup](#Setup)
+  - [Requirements](#Requirements)
+  - [Installation](#Installation)
 - [Documentation](#Documentation)
   - [Initialize the SDK](#Initialize-the-SDK)
   - [Keys](#Keys)
@@ -41,13 +43,13 @@ Using the SDK can simplify and speed up the development process, and ensure that
 
 Instructions for adding the YouCan Pay SDK to your Python Application.
 
-#### Step 1: Requirements
+#### [Requirements](#Requirements)
 
 - YouCan Pay Account.
 - Your YouCan Pay `private_key` and `public_key` available in Settings > API Keys.
 - This package installed in your Development / Production environment.
 
-#### Step 2: Installation
+#### [Installation](#Installation)
 
 Open your Python project, add the following.
 
