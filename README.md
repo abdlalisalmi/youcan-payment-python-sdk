@@ -24,6 +24,9 @@ YouCan Pay Python SDK is a Python package that allows the developers to interact
 - [Documentation](#Documentation)
   - [Initialize the SDK](#Initialize-the-SDK)
   - [Keys](#Keys)
+    - [Keys.check()](<#Keys.check()>)
+  - [Token](#Token)
+    - [Token.create()](<#Token.create()>)
 
 ## [Why not use the YouCan Pay API directly?](#Why-not-use-the-YouCan-Pay-API-directly?)
 
@@ -70,31 +73,37 @@ youcanpay =  YouCanPay(private_key='pri_**', public_key='pub_**', sandbox_mode=T
 
 #### [Keys](#Keys)
 
-Check the keys if is valid or not with `.check()` method.
+Keys it's a class that contains all the methods related to the API Keys.
 
-```python
-# Check the keys if is valid or not.
-youcanpay.keys.check()
-```
+- **[Keys.check()](<#Keys.check()>):**
+  Check if the keys are valid or not.
+
+  ```python
+  # Check the keys if is valid or not.
+  youcanpay.keys.check()
+  ```
 
 #### [Token](#Token)
 
-Create a token with `.create()` method.
+Token it's a class that contains all the methods related to the **payment token**.
 
-```python
-# Create a token.
-token = youcanpay.token.create(
-		orderId="123456789", # Required
-		amount=100, # Required
-		currency="MAD" # Required
-		success_url = None, # Optional
-		error_url = None, # Optional
-		customer_ip="127.0.0.1", # Optional
-		customer_info = [], # Optional
-		metadata= [] # Optional
-	)
-print(token.id) #>> ac7dcb21-f871-6612-88c6-551e9ad2132f
-```
+- **[Token.create():](<#Token.create()>):**
+  Generating a payment token to use it in the payment process.
+
+  ```python
+  # Create a token.
+  token = youcanpay.token.create(
+  		orderId="123456789", # Required
+  		amount=100, # Required
+  		currency="MAD" # Required
+  		success_url = None, # Optional
+  		error_url = None, # Optional
+  		customer_ip="127.0.0.1", # Optional
+  		customer_info = [], # Optional
+  		metadata= [] # Optional
+  	)
+  print(token.id) #>> ac7dcb21-f871-6612-88c6-551e9ad2132f
+  ```
 
 <!---
 ##### Step 2.1: YouCan Pay: Default Integration
