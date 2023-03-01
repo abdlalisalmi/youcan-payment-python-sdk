@@ -19,8 +19,8 @@ class Token:
         amount: str,
         currency: str,
         customer_ip: str,
-        success_url: str = None,
-        error_url: str = None,
+        success_url: str,
+        error_url: str,
         customer_info: list = [],
         metadata: list = [],
     ):
