@@ -6,9 +6,9 @@ from youcanpay import exceptions
 
 class APIService(object):
 
-    """  """
+    """ """
 
-    BASE_API_URL = 'https://youcanpay.com/'
+    BASE_API_URL = "https://youcanpay.com/"
 
     def __init__(self, public_key: str, private_key: str, sandbox_mode=False) -> None:
         self.public_key = public_key
@@ -16,11 +16,15 @@ class APIService(object):
         self.sandbox_mode = sandbox_mode
 
     @property
+    def base_api_url(self) -> str:
+        return self.BASE_API_URL
+
+    @property
     def base_url(self) -> str:
         # Get base url from environment variable
-        base_url = os.environ.get('YOUCAN_PAY_API_URL', self.BASE_API_URL)
+        base_url = os.environ.get("YOUCAN_PAY_API_URL", self.BASE_API_URL)
         #  Check sandbox mode
-        base_url = base_url + 'sandbox/api/' if self.sandbox_mode else base_url + 'api/'
+        base_url = base_url + "sandbox/api/" if self.sandbox_mode else base_url + "api/"
         return base_url
 
     @property
@@ -37,7 +41,7 @@ class APIService(object):
         msg = None
         try:
             res = response.json()
-            msg = res.get('message', None)
+            msg = res.get("message", None)
         except:
             pass
         if response.status_code == 200 or response.status_code == 201:
@@ -57,12 +61,13 @@ class APIService(object):
 
     @staticmethod
     def request(method: str, endpoint: str, data: dict, headers: dict):
-        headers['Content-Type'] = 'application/json'
+        headers["Content-Type"] = "application/json"
         return requests.request(
-            method, endpoint, headers=headers, data=json.dumps(data))
+            method, endpoint, headers=headers, data=json.dumps(data)
+        )
 
     def post(self, endpoint: str, data: dict = {}, headers: dict = {}):
-        return self.request('POST', endpoint, data, headers)
+        return self.request("POST", endpoint, data, headers)
 
     def get(self, endpoint: str, data: dict = {}, headers: dict = {}):
-        return self.request('GET', endpoint, data, headers)
+        return self.request("GET", endpoint, data, headers)
