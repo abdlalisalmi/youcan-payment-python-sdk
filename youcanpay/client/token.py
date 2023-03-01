@@ -21,8 +21,8 @@ class Token:
         customer_ip: str,
         success_url: str,
         error_url: str,
-        customer_info: list = [],
-        metadata: list = [],
+        customer_info: dict = {},
+        metadata: dict = {},
     ):
         data = {
             "pri_key": self.api_service.get_private_key(),
