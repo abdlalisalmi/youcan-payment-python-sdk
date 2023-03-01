@@ -18,10 +18,10 @@ YouCan Pay Python SDK is a Python package that allows the developers to interact
 - [YouCan Pay & YouCan Pay Python SDK](#YouCan-Pay-&-YouCan-Pay-Python-SDK)
 - [Why](#Why)
   - [Why not use the YouCan Pay API directly?](#Why-not-use-the-YouCan-Pay-API-directly?)
-- [Setup](#Setup)
+- [YouCan Pay SDK Setup](#YouCan-Pay-SDK-Setup)
   - [Requirements](#Requirements)
   - [Installation](#Installation)
-- [Documentation](#Documentation)
+- [Integration](#Integration)
   - [Initialize the SDK](#Initialize-the-SDK)
   - [Keys](#Keys)
     - [Keys.check()](<#Keys.check()>)
@@ -42,7 +42,7 @@ Using the SDK can simplify and speed up the development process, and ensure that
 
 - **Easier maintenance:** Because an SDK typically includes pre-built components and abstractions, it can be easier to maintain and update your application when changes are made to the underlying API.
 
-## [Setup](#Setup)
+## [YouCan Pay SDK Setup](#YouCan-Pay-SDK-Setup)
 
 Instructions for adding the YouCan Pay SDK to your Python Application.
 
@@ -60,9 +60,137 @@ Open your Python project, add the following.
 Coming Soon... (or for now you can use the source code)
 ```
 
-## [Documentation](#Documentation)
+## [Integration](#Integration)
 
-#### [Initialize the SDK](#Initialize-the-SDK)
+##### [1. YouCan Pay: Default Integration](#1.-YouCan-Pay:-Default-Integration)
+
+You can make payments directly on your site, with the possibility of choosing the position in the DOM.
+If you choose to use JS integration (Default Integration), keep in mind that you must have an SSL certificate to run in production mode.
+
+1.1: Copy this JS script between `<head>...</head>`
+
+```javascript
+<script src="https://pay.youcan.shop/js/ycpay.js"></script>
+```
+
+1.2: Choose where you want to display payment information (Full Name, Card Numbers, CCV...), must be placed between the `<body>...</body>` tags.
+
+```javascript
+<div id="payment-card"></div> // the div that will contain the payment form
+<div id="error-container"></div> // the div that will contain the errors
+<button id="pay">Pay</button> // the button that will trigger the payment
+```
+
+1.3: Add this code just before the end of the `...</body>` tag.
+
+```javascript
+<script type="text/javascript">
+  // Create a YouCan Pay instance.
+  const ycPay = new YCPay(
+    // String public_key (required): Login to your account.
+    // Go to Settings and open API Keys and copy your key.
+    "public_key",
+    // Optional options object
+    {
+      formContainer: "#payment-card",
+      // Defines what language the form should be rendered in, supports EN, AR, FR.
+      locale: "en",
+
+      // Whether the integration should run in sandbox (test) mode or live mode.
+      isSandbox: false,
+
+      // A DOM selector representing which component errors should be injected into.
+      // If you omit this option, you may alternatively handle errors by chaining a .catch()
+      // On the pay method.
+      errorContainer: "#error-container",
+    }
+  );
+
+  // Select which gateways to render
+  ycPay.renderAvailableGateways(["CashPlus", "CreditCard"]);
+
+  // Alternatively, you may use gateway specific render methods if you only need one.
+  ycPay.renderCreditCardForm();
+</script>
+```
+
+1.4: Tokenization: generate a token to use it in the payment process.
+
+```python
+from youcanpay import YouCanPay
+
+# Initialize the SDK instance
+# You can use the sandbox mode to test the integration.
+# Sandbox mode is set to False by default.
+youcanpay =  YouCanPay(private_key='pri_**', public_key='pub_**', sandbox_mode=True)
+
+# Data of the customer who wishes to make this purchase.
+# Please keep these keys.
+customer_info = {
+		'name': '',
+		'address':'',
+		'zip_code': '',
+		'city': '',
+		'state': '',
+		'country_code': '',
+		'phone': '',
+		'email': '',
+	 }
+
+# You can use it to send data to retrieve after the response or in the webhook.
+metadata = {
+	# Can you insert what you want here...
+	'key': 'value'
+}
+
+# Create a token.
+token = youcanpay.token.create(
+		#String orderId (required): Identifier of the order you want to be paid.
+		orderId="123456789",
+		# Integer amount (required): The amount, Example: 25 USD is 2500.
+		amount=100,
+		# String currency (required): Uppercase currency.
+		currency="MAD"
+		# String customerIP (required): Customer Address IP.
+		customer_ip="123.123.123.123",
+		# String successUrl (required): This URL is returned when the payment is successfully processed.
+		success_url = "https://yourdomain.com/orders-status/success",
+		# String errorUrl (required): This URL is returned when payment is invalid.
+		error_url = "https://yourdomain.com/orders-status/error",
+		# Array customerInfo (optional): Data of the customer who wishes to make this purchase.
+		customer_info = customer_info,
+		# Array metadata (optional): You can use it to send data to retrieve after the response or in the webhook.
+		metadata= metadata
+	)
+print(token.id) #>> ac7dcb21-f871-6612-88c6-551e9ad2132f
+```
+
+1.5: Retrieve the token you created with the SDK in your **backend** and insert it into the JS script, this token which contains all the information concerning this payment.
+
+When the buyer clicks on the Pay button. the JS code below runs, and you receive a **GET** response in **successUrl** or **errorUrl** you defined in the tokenization step.
+
+```javascript
+<script type="text/javascript">
+  // Start the payment on button click
+  document.getElementById("pay").addEventListener("click", function () {
+    // Execute the payment, it is required to put the created token in the tokenization step.
+    ycPay
+      .pay("token_id")
+      .then(successCallback)
+      .catch(errorCallback);
+  });
+
+  function successCallback(transactionId) {
+    //your code here
+  }
+
+  function errorCallback(errorMessage) {
+    //your code here
+  }
+</script>
+```
+
+<!-- #### [Initialize the SDK](#Initialize-the-SDK)
 
 ```python
 from youcanpay import YouCanPay
@@ -103,51 +231,4 @@ Token it's a class that contains all the methods related to the **payment token*
   		metadata= [] # Optional
   	)
   print(token.id) #>> ac7dcb21-f871-6612-88c6-551e9ad2132f
-  ```
-
-<!---
-##### Step 2.1: YouCan Pay: Default Integration
-If you choose to use JS integration, you must have an SSL certificate to run in production mode.
-
-2.1.1: Copy this JS script between  `<head>...</head>`
-```javascript
-<script src="https://pay.youcan.shop/js/ycpay.js"></script>
-```
-2.1.2: Choose where you want to display payment information (Full Name, Card Numbers, CCV...), must be placed between the `<body>...</body>` tags.
-```javascript
-<div id="payment-card"></div>
-<button id="pay">Pay</button>
-```
-2.1.3: Add this code just before the end of the `...</body>` tag.
-```javascript
-<script type="text/javascript">
-  // Create a YouCan Pay instance.
-  const ycPay = new YCPay(
-    // String public_key (required): Login to your account.
-    // Go to Settings and open API Keys and copy your key.
-    "public_key",
-    // Optional options object
-    {
-      formContainer: "#payment-card",
-      // Defines what language the form should be rendered in, supports EN, AR, FR.
-      locale: "en",
-
-      // Whether the integration should run in sandbox (test) mode or live mode.
-      isSandbox: false,
-
-      // A DOM selector representing which component errors should be injected into.
-      // If you omit this option, you may alternatively handle errors by chaining a .catch()
-      // On the pay method.
-      errorContainer: "#error-container",
-    }
-  );
-
-  // Select which gateways to render
-  ycPay.renderAvailableGateways(["CashPlus", "CreditCard"]);
-
-  // Alternatively, you may use gateway specific render methods if you only need one.
-  ycPay.renderCreditCardForm();
-</script>
-```
-
--->
+  ``` -->
