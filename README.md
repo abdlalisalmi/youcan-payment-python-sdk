@@ -22,11 +22,7 @@ YouCan Pay Python SDK is a Python package that allows the developers to interact
   - [Requirements](#Requirements)
   - [Installation](#Installation)
 - [Integration](#Integration)
-  - [Initialize the SDK](#Initialize-the-SDK)
-  - [Keys](#Keys)
-    - [Keys.check()](<#Keys.check()>)
-  - [Token](#Token)
-    - [Token.create()](<#Token.create()>)
+  - [YouCan Pay: Default Integration](#1.-YouCan-Pay:-Default-Integration)
 
 ## [Why not use the YouCan Pay API directly?](#Why-not-use-the-YouCan-Pay-API-directly?)
 
@@ -62,7 +58,7 @@ Coming Soon... (or for now you can use the source code)
 
 ## [Integration](#Integration)
 
-##### [1. YouCan Pay: Default Integration](#1.-YouCan-Pay:-Default-Integration)
+#### [1. YouCan Pay: Default Integration](#1.-YouCan-Pay:-Default-Integration)
 
 You can make payments directly on your site, with the possibility of choosing the position in the DOM.
 If you choose to use JS integration (Default Integration), keep in mind that you must have an SSL certificate to run in production mode.
