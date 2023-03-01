@@ -22,7 +22,7 @@ YouCan Pay Python SDK is a Python package that allows the developers to interact
   - [Requirements](#Requirements)
   - [Installation](#Installation)
 - [Integration](#Integration)
-  - [YouCan Pay: Default Integration](#1.-YouCan-Pay:-Default-Integration)
+  - [1. YouCan Pay: Default Integration](#1.-YouCan-Pay:-Default-Integration)
 
 ## [Why not use the YouCan Pay API directly?](#Why-not-use-the-YouCan-Pay-API-directly?)
 
@@ -158,7 +158,8 @@ token = youcanpay.token.create(
 		# Array metadata (optional): You can use it to send data to retrieve after the response or in the webhook.
 		metadata= metadata
 	)
-print(token.id) #>> ac7dcb21-f871-6612-88c6-551e9ad2132f
+# Return the token id in the response to use it in the payment process.
+return token.id # EX: ac7dcb21-f871-6612-88c6-551e9ad2132f
 ```
 
 1.5: Retrieve the token you created with the SDK in your **backend** and insert it into the JS script, this token which contains all the information concerning this payment.
